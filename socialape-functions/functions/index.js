@@ -3,43 +3,57 @@ const admin = require('firebase-admin')
 
 admin.initializeApp()
 
+const express = require('express')
+const app = express()
+
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 
-exports.helloWorld = functions.https.onRequest((request, response) => {
- response.send("Hello, world!");
-});
+exports.helloWorld = functions
+    .region('asia-east2')
+    .https.onRequest((request, response) => {
+        response.send("Hello, world!");
+    });
 
-exports.getScreams = functions.https.onRequest((request, response) => {
-    admin.firestore().collection('screams').get()
+app.get('/screams', (req, res) => {
+    admin.firestore()
+        .collection('screams')
+        .orderBy('createdAt', 'desc')
+        .get()
         .then(data => {
             let screams = []
             data.forEach(doc => {
-                screams.push(doc.data())
+                screams.push({
+                    screamId: doc.id,
+                    ...doc.data()
+                })
             })
-            return response.json(screams)
+            return res.json(screams)
         })
         .catch(err => {
             console.error(err)
         })
 })
 
-exports.createScream = functions.https.onRequest((request, response) => {
-    if (request.method !== 'POST') return response.status(400).json({ error: 'Method not allowed' })
+app.post('/scream', (req, res) => {
     const newScream = {
-        body: request.body.body,
-        userHandle: request.body.userHandle,
-        createdt: admin.firestore.Timestamp.fromDate(new Date())
+        body: req.body.body,
+        userHandle: req.body.userHandle,
+        createdt: new Date().toISOString()
     }
 
     admin.firestore()
         .collection('screams')
         .add(newScream)
         .then(doc => {
-            return response.json({ message: `document ${doc.id} created successfully`})
+            return res.json({ message: `document ${doc.id} created successfully`})
         })
         .catch(err => {
             console.error(err)
-            return response.status(500).json({ error: 'Something went wrong. Please try again later. '})
+            return res.status(500).json({ error: 'Something went wrong. Please try again later. '})
         })
 })
+
+exports.api = functions
+    .region('asia-east2')
+    .https.onRequest(app)
