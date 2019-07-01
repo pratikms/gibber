@@ -95,6 +95,38 @@ exports.addUserDetails = (req, res) => {
         })
 }
 
+// Get any user's details
+exports.getUserDetails = (req, res) => {
+    let userData = {}
+    db
+        .doc(`/users/${req.params.handle}`)
+        .get()
+        .then(doc => {
+            if (doc.exists) {
+                userData.user = doc.data()
+                return db
+                    .collection('screams')
+                    .where('userHandle', '==', req.params.handle)
+                    .orderBy('createdAt', 'desc')
+                    .get()
+            }
+        })
+        .then(data => {
+            userData.screams = []
+            data.forEach(doc => {
+                userData.screams.push({
+                    screamId: doc.id,
+                    ...doc.data()
+                })
+            })
+            return res.json(userData)
+        })
+        .catch(err => {
+            console.error(err)
+            return res.status(500).json({ error: err.message })
+        })
+}
+
 // Get authenticated user's details
 exports.getAuthenticatedUser = (req, res) => {
     let userData = {}
@@ -102,15 +134,29 @@ exports.getAuthenticatedUser = (req, res) => {
         .doc(`/users/${req.user.handle}`)
         .get()
         .then(doc => {
-            if (doc.exists) {
-                userData.credentials = doc.data()
-                return db.collection('likes').where('userHandle', '==', req.user.handle).get()
-            }
+            if (!doc.exists) return res.status(404).json({ error: 'User not found' })
+            userData.credentials = doc.data()
+            return db.collection('likes').where('userHandle', '==', req.user.handle).get()
         })
         .then(data => {
             userData.likes = []
             data.forEach(doc => {
                 userData.likes.push(doc.data())
+            })
+            return db
+                .collection('notifications')
+                .where('recipient', '==', req.user.handle)
+                .orderBy('createdAt', 'desc')
+                .limit(10)
+                .get()
+        })
+        .then(data => {
+            userData.notifications = []
+            data.forEach(doc => {
+                userData.notifications.push({
+                    notificationId: doc.id,
+                    ...doc.data()
+                })
             })
             return res.json(userData)
         })
@@ -174,4 +220,22 @@ exports.uploadImage = (req, res) => {
         })
     })
     busboy.end(req.rawBody)
+}
+
+// Mark notification as read
+exports.markNotificationsRead = (req, res) => {
+    let batch = db.batch()
+    req.body.forEach(notificationId =>  {
+        const notification = db.doc(`/notifications/${notificationId}`)
+        batch.update(notification, { read: true })
+    })
+    batch
+        .commit()
+        .then(() => {
+            return res.json({ message: 'Notifications marked as read' })
+        })
+        .catch(err => {
+            console.error(err)
+            return res.status(500).json({ error: err.message })
+        })
 }
