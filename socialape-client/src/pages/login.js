@@ -6,6 +6,10 @@ import AppIcon from '../images/favicon.png'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
 
+// const styles = (theme) => ({
+//     ...theme
+// })
+
 const styles = {
     form: {
         textAlign: 'center'
@@ -30,7 +34,7 @@ const styles = {
     },
     progress: {
         position: 'absolute'
-    }
+    }    
 }
 
 class Login extends Component {
@@ -56,7 +60,8 @@ class Login extends Component {
         }
         axios.post('/login', userData)
             .then(res => {
-                console.log(res.data);
+                console.log(res.data)
+                localStorage.setItem('FirebaseToken', `Bearer ${res.data.token}`)
                 this.setState({
                     loading: false
                 })
@@ -109,7 +114,7 @@ class Login extends Component {
                             label="Password" 
                             className={classes.textField} 
                             helperText={errors.password}
-                            error={errors.email ? true : false}
+                            error={errors.password ? true : false}
                             value={this.state.password}
                             onChange={this.handleChange}
                             fullWidth
