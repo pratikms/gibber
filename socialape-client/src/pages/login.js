@@ -3,8 +3,11 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import PropTypes from 'prop-types'
 import { Grid, Typography, TextField, Button, CircularProgress } from '@material-ui/core'
 import AppIcon from '../images/favicon.png'
-import axios from 'axios'
 import { Link } from 'react-router-dom'
+
+// Redux
+import { connect } from 'react-redux'
+import { loginUser } from '../redux/actions/user-actions'
 
 // const styles = (theme) => ({
 //     ...theme
@@ -44,35 +47,23 @@ class Login extends Component {
         this.state = {
             email: '',
             password: '',
-            loading: false,
             errors: {}            
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.ui.errors) {
+            this.setState({ errors: nextProps.ui.errors })
         }
     }
     
     handleSubmit = (event) => {
         event.preventDefault()
-        this.setState({
-            loading: true
-        })
         const userData = {
             email: this.state.email,
             password: this.state.password
         }
-        axios.post('/login', userData)
-            .then(res => {
-                console.log(res.data)
-                localStorage.setItem('FirebaseToken', `Bearer ${res.data.token}`)
-                this.setState({
-                    loading: false
-                })
-                this.props.history.push('/')
-            })
-            .catch(err => {
-                this.setState({
-                    errors: err.response.data,
-                    loading: false
-                })
-            })
+        this.props.loginUser(userData, this.props.history)
     }
 
     handleChange = (event) => {
@@ -83,8 +74,8 @@ class Login extends Component {
     
     render() {
 
-        const { classes } = this.props
-        const { errors, loading } = this.state
+        const { classes, ui: { loading } } = this.props
+        const { errors } = this.state
 
         return (
             <Grid container className={classes.form}>
@@ -148,7 +139,19 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-    classes: PropTypes.object.isRequired
+    classes: PropTypes.object.isRequired,
+    loginUser: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
+    ui: PropTypes.object.isRequired
 }
 
-export default withStyles(styles)(Login)
+const mapStateToProps = (state) => ({
+    user: state.user,
+    ui: state.ui
+})
+
+const mapActionsToProps = {
+    loginUser
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(Login))
