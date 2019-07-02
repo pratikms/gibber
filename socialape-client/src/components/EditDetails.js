@@ -7,8 +7,9 @@ import { editUserDetails } from '../redux/actions/user-actions'
 
 // Icons
 import EditIcon from '@material-ui/icons/Edit'
-import { IconButton, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Tooltip, Button } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@material-ui/core';
 import theme from '../utils/theme';
+import CustomIconButton from '../utils/CustomIconButton';
 
 const styles = {
     ...theme,
@@ -70,11 +71,9 @@ class EditDetails extends Component {
 
         return (
             <Fragment>
-                <Tooltip title="Edit details" placement="top">
-                    <IconButton onClick={this.handleOpen} className={classes.button}>
-                        <EditIcon color="primary" />
-                    </IconButton>
-                </Tooltip>
+                <CustomIconButton tip="Edit details" onClick={this.handleOpen} btnClassName={classes.button}>
+                    <EditIcon color="primary" />
+                </CustomIconButton>
                 <Dialog 
                     open={this.state.open}
                     onClose={this.handleClose}
