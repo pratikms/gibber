@@ -4,12 +4,13 @@ import withStyles from '@material-ui/core/styles/withStyles'
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom'
 import dayjs from 'dayjs'
+import EditDetails from './EditDetails'
 
 // Material UI
 import { Button, Paper, Link as MUILink, Typography, IconButton, Tooltip } from '@material-ui/core'
 
 // Icons
-import { LocationOn, CalendarToday } from '@material-ui/icons'
+import { LocationOn, CalendarToday, KeyboardReturn } from '@material-ui/icons'
 import LinkIcon from '@material-ui/icons/Link'
 import EditIcon from '@material-ui/icons/Edit'
 
@@ -69,7 +70,7 @@ const styles = {
         '& a': {
             margin: '20px 10px'
         }
-    }    
+    }
 }
 
 class Profile extends Component {
@@ -84,6 +85,10 @@ class Profile extends Component {
     handleEditPicture = () => {
         const fileInput = document.getElementById('profileImage')
         fileInput.click()
+    }
+
+    handleLogout = () => {
+        this.props.logoutUser()
     }
 
     render() {
@@ -142,6 +147,12 @@ class Profile extends Component {
                         <CalendarToday color="primary" />{' '}
                         <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
                     </div>
+                    <Tooltip title="Logout" placement="top">
+                        <IconButton onClick={this.handleLogout}>
+                            <KeyboardReturn color="primary" />
+                        </IconButton>
+                    </Tooltip>
+                    <EditDetails />
                 </div>
             </Paper>
         ) : (
