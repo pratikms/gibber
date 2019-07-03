@@ -12,7 +12,8 @@ import { Link } from 'react-router-dom'
 import { Dialog, DialogContent, CircularProgress, Grid, Typography } from '@material-ui/core';
 import theme from '../utils/theme';
 import CustomIconButton from '../utils/CustomIconButton';
-import { Close, UnfoldMore } from '@material-ui/icons';
+import { Close, UnfoldMore, Chat } from '@material-ui/icons';
+import LikeButton from './LikeButton';
 
 const styles = {
     ...theme,
@@ -73,7 +74,9 @@ class ScreamDialog extends Component {
         } = this.props
 
         const dialogMarkup = loading ? (
-            <CircularProgress size={200} />
+            <div className={classes.spinnerDiv}>
+                <CircularProgress size={200} thickness={2} />
+            </div>
         ) : (
             <Grid container spacing={16}>
                 <Grid item sm={5}>
@@ -96,6 +99,12 @@ class ScreamDialog extends Component {
                     <Typography variant="body1">
                         {body}
                     </Typography>
+                    <LikeButton screamId={screamId} />
+                    <span>{likeCount ? likeCount : 0} likes</span>
+                    <CustomIconButton tip="comments">
+                        <Chat color="primary" />
+                    </CustomIconButton>
+                    <span>{commentCount ? commentCount : 0} comments</span>
                 </Grid>
             </Grid>
         )
