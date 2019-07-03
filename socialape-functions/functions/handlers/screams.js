@@ -10,7 +10,13 @@ exports.getAllScreams = (req, res) => {
             data.forEach(doc => {
                 screams.push({
                     screamId: doc.id,
-                    ...doc.data()
+                    body: doc.data().body,
+                    userHandle: doc.data().userHandle,
+                    createdAt: doc.data().createdAt,
+                    commentCount: doc.data().commentCount,
+                    likeCount: doc.data().likeCount,
+                    userImage: doc.data().userImage
+                    // ...doc.data()
                 })
             })
             return res.json(screams)
