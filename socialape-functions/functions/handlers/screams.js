@@ -6,8 +6,12 @@ exports.getAllScreams = (req, res) => {
         .orderBy('createdAt', 'desc')
         .get()
         .then(data => {
+            console.log('Result set: ')
+            console.log(data)
             let screams = []
             data.forEach(doc => {
+                console.log('Data: ')
+                console.log(doc)
                 screams.push({
                     screamId: doc.id,
                     body: doc.data().body,
