@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import withStyles from '@material-ui/core/styles/withStyles'
 
 import { connect } from 'react-redux'
-import { postScream, clearErrors } from '../redux/actions/data-actions'
+import { postScream, clearErrors } from '../../redux/actions/data-actions'
 
 // Icons
 import { Dialog, DialogTitle, DialogContent, TextField, CircularProgress, Button } from '@material-ui/core';
-import theme from '../utils/theme';
-import CustomIconButton from '../utils/CustomIconButton';
+import theme from '../../utils/theme';
+import CustomIconButton from '../../utils/CustomIconButton';
 import { Add, Close } from '@material-ui/icons';
 
 const styles = {

@@ -3,17 +3,18 @@ import PropTypes from 'prop-types'
 import withStyles from '@material-ui/core/styles/withStyles'
 
 import { connect } from 'react-redux'
-import { getScream } from '../redux/actions/data-actions'
+import { getScream } from '../../redux/actions/data-actions'
 
 import dayjs from 'dayjs'
 import { Link } from 'react-router-dom'
 
 // Icons
 import { Dialog, DialogContent, CircularProgress, Grid, Typography } from '@material-ui/core';
-import theme from '../utils/theme';
-import CustomIconButton from '../utils/CustomIconButton';
+import theme from '../../utils/theme';
+import CustomIconButton from '../../utils/CustomIconButton';
 import { Close, UnfoldMore, Chat } from '@material-ui/icons';
 import LikeButton from './LikeButton';
+import Comments from './Comments'
 
 const styles = {
     ...theme,
@@ -67,7 +68,8 @@ class ScreamDialog extends Component {
                 likeCount, 
                 commentCount, 
                 userImage, 
-                userHandle 
+                userHandle,
+                comments
             }, ui: { 
                 loading 
             }
@@ -106,6 +108,8 @@ class ScreamDialog extends Component {
                     </CustomIconButton>
                     <span>{commentCount ? commentCount : 0} comments</span>
                 </Grid>
+                <hr className={classes.visibleSeparator} />
+                <Comments comments={comments} />
             </Grid>
         )
 

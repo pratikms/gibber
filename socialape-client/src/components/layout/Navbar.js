@@ -11,8 +11,8 @@ import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Home, Notifications } from '@material-ui/icons';
 
-import CustomIconButton from '../utils/CustomIconButton';
-import PostScream from './PostScream'
+import CustomIconButton from '../../utils/CustomIconButton';
+import PostScream from '../scream/PostScream'
 
 class Navbar extends Component {
     render() {

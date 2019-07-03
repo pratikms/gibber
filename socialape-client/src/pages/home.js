@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Grid } from '@material-ui/core';
 
-import Scream from './../components/Scream'
-import Profile from './../components/Profile'
+import Scream from '../components/scream/Scream'
+import Profile from '../components/profile/Profile'
 
 import PropTypes from 'prop-types'
 

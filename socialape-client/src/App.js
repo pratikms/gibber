@@ -15,7 +15,7 @@ import { logoutUser, getUserData } from './redux/actions/user-actions'
 import themeObject from './utils/theme'
 
 // Components
-import Navbar from './components/Navbar'
+import Navbar from './components/layout/Navbar'
 
 // Pages
 import Home from './pages/home'

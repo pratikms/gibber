@@ -3,8 +3,8 @@ import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
-import { deleteScream } from './../redux/actions/data-actions'
-import CustomIconButton from '../utils/CustomIconButton';
+import { deleteScream } from '../../redux/actions/data-actions'
+import CustomIconButton from '../../utils/CustomIconButton';
 import { DeleteOutline } from '@material-ui/icons';
 import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core';
 

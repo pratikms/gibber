@@ -14,7 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux'
 import { Chat } from '@material-ui/icons';
 
-import CustomIconButton from '../utils/CustomIconButton'
+import CustomIconButton from '../../utils/CustomIconButton'
 import DeleteScream from './DeleteScream';
 import ScreamDialog from './ScreamDialog'
 import LikeButton from './LikeButton';

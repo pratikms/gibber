@@ -14,19 +14,10 @@ import { LocationOn, CalendarToday, KeyboardReturn } from '@material-ui/icons'
 import LinkIcon from '@material-ui/icons/Link'
 import EditIcon from '@material-ui/icons/Edit'
 
-import { logoutUser, uploadImage } from '../redux/actions/user-actions'
-import CustomIconButton from '../utils/CustomIconButton';
+import { logoutUser, uploadImage } from '../../redux/actions/user-actions'
+import CustomIconButton from '../../utils/CustomIconButton';
 
 const styles = {
-    invisibleSeparator: {
-        border: 'none',
-        margin: 4
-    },
-    visibleSeparator: {
-        width: '100%',
-        borderBottom: '1px solid rgba(0,0,0,0.1)',
-        marginBottom: 20
-    },
     paper: {
         padding: 20
     },

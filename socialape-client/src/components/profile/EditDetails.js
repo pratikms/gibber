@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import withStyles from '@material-ui/core/styles/withStyles'
 
 import { connect } from 'react-redux'
-import { editUserDetails } from '../redux/actions/user-actions'
+import { editUserDetails } from '../../redux/actions/user-actions'
 
 // Icons
 import EditIcon from '@material-ui/icons/Edit'
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from '@material-ui/core';
-import theme from '../utils/theme';
-import CustomIconButton from '../utils/CustomIconButton';
+import theme from '../../utils/theme';
+import CustomIconButton from '../../utils/CustomIconButton';
 
 const styles = {
     ...theme,
