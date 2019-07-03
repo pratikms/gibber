@@ -9,7 +9,7 @@ import AuthRoute from './utils/AuthRoute'
 // Redux
 import { Provider } from 'react-redux'
 import store from './redux/store'
-import { SET_AUTHENTICATED, SET_ERRORS } from './redux/types'
+import { SET_AUTHENTICATED } from './redux/types'
 import { logoutUser, getUserData } from './redux/actions/user-actions'
 
 import themeObject from './utils/theme'
@@ -25,7 +25,6 @@ import axios from 'axios';
 
 const theme = createMuiTheme(themeObject)
 
-let authenticated
 const token = localStorage.FirebaseToken
 if (token) {
   const decodedToken = jwtDecode(token)

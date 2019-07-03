@@ -32,6 +32,8 @@ export const getScreams = () => (dispatch) => {
 // Post a scream
 export const postScream = (newScream) => (dispatch) => {
     dispatch({ type: LOADING_UI })
+    console.log(newScream);
+    
     axios.post('/scream', newScream)
         .then(res => {
             dispatch({
@@ -82,4 +84,9 @@ export const deleteScream = (screamId) => (dispatch) => {
             })
         })
         .catch(err => console.log(err))
+}
+
+// Clear errors
+export const clearErrors = () => (dispatch) => {
+    dispatch({ type: CLEAR_ERRORS })
 }

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import withStyles from '@material-ui/core/styles/withStyles'
 
 import { connect } from 'react-redux'
-import { postScream } from '../redux/actions/data-actions'
+import { postScream, clearErrors } from '../redux/actions/data-actions'
 
 // Icons
 import { Dialog, DialogTitle, DialogContent, TextField, CircularProgress, Button } from '@material-ui/core';
@@ -15,6 +15,8 @@ const styles = {
     ...theme,
     submitButton: {
         position: 'relative',
+        float: 'right',
+        marginTop: 10
     },
     progressSpinner: {
         position: 'absolute'
@@ -39,17 +41,19 @@ class PostScream extends Component {
     }
 
     handleClose = () => {
+        this.props.clearErrors()
         this.setState({ open: false, errors: {} })
     }
 
     handleChange = (event) => {
         this.setState({
-            [event.target.name]: [event.target.value]
+            [event.target.name]: event.target.value
         })
     }
 
     handleSubmit = (event) => {
         event.preventDefault()
+        console.log(this.state)
         this.props.postScream({ body: this.state.body })
     }
 
@@ -60,8 +64,7 @@ class PostScream extends Component {
             })
         }
         if (!nextProps.ui.errors && !nextProps.ui.loading) {
-            this.setState({ body: '' })
-            this.handleClose()
+            this.setState({ body: '', open: false, errors: {} })
         }
     }
 
@@ -91,11 +94,10 @@ class PostScream extends Component {
                             <TextField
                                 name="body"
                                 type="text"
-                                label="Screeaaam!"
+                                label="Screeaam!!"
                                 multiline
                                 rows="3"
-                                placeholder="Screeam!"
-                                error={errors.body ? true: false}
+                                error={errors.body ? true : false}
                                 helperText={errors.body}
                                 className={classes.textField}
                                 onChange={this.handleChange}
@@ -127,11 +129,13 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionToProps = {
-    postScream
+    postScream,
+    clearErrors
 }
 
 PostScream.propTypes = {
     postScream: PropTypes.func.isRequired,
+    clearErrors: PropTypes.func.isRequired,
     ui: PropTypes.object.isRequired
 }
 
