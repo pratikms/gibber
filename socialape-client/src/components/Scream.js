@@ -16,9 +16,11 @@ import { likeScream, unlikeScream } from '../redux/actions/data-actions'
 import { Chat, FavoriteBorder, Favorite } from '@material-ui/icons';
 
 import CustomIconButton from '../utils/CustomIconButton'
+import DeleteScream from './DeleteScream';
 
 const styles = {
     card: {
+        position: 'relative',
         display: 'flex',
         marginBottom: 20
     },
@@ -64,7 +66,10 @@ class Scream extends Component {
                 commentCount 
             },
             user: {
-                authenticated
+                authenticated,
+                credentials: {
+                    handle
+                }
             }
         } = this.props
 
@@ -86,6 +91,10 @@ class Scream extends Component {
             )
         )
 
+        const deleteButton = authenticated && userHandle === handle ? (
+            <DeleteScream screamId={screamId} />
+        ) : null
+
         return (
             <Card className={classes.card}>
                 <CardMedia 
@@ -95,6 +104,7 @@ class Scream extends Component {
                 />
                 <CardContent className={classes.content}>
                     <Typography variant="h5" component={Link} to={`/users/${userHandle}`} color="primary">{userHandle}</Typography>
+                    {deleteButton}
                     <Typography variant="body2" color="textSecondary">{dayjs(createdAt).fromNow()}</Typography>
                     <Typography variant="body1">{body}</Typography>
                     {likeButton}
