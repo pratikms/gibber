@@ -17,6 +17,7 @@ import { Chat, FavoriteBorder, Favorite } from '@material-ui/icons';
 
 import CustomIconButton from '../utils/CustomIconButton'
 import DeleteScream from './DeleteScream';
+import ScreamDialog from './ScreamDialog'
 
 const styles = {
     card: {
@@ -112,6 +113,7 @@ class Scream extends Component {
                     <CustomIconButton tip="comments">
                         <Chat color="primary" />
                     </CustomIconButton>
+                    <ScreamDialog screamId={screamId} userHandle={userHandle} />
                 </CardContent>
             </Card>
         )
