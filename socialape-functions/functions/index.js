@@ -5,6 +5,9 @@ const app = express()
 
 const FirebaseAuth = require('./utils/fb-auth')
 
+const cors = require('cors')
+app.use(cors())
+
 const { db } = require('./utils/admin')
 
 const { 

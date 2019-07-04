@@ -27,6 +27,8 @@ import axios from 'axios';
 
 const theme = createMuiTheme(themeObject)
 
+axios.defaults.baseURL = 'https://asia-east2-socialape-b75ab.cloudfunctions.net/api'
+
 const token = localStorage.FirebaseToken
 if (token) {
   const decodedToken = jwtDecode(token)
