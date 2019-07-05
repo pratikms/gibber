@@ -1,6 +1,6 @@
-# iscream
+# scream
 
-A pure serverless, fully-featured social media application developed using React, Redux, Express, Firebase and Material-UI
+A pure, serverless, fully-featured social networking application developed using React, Redux, Express, Material-UI and Firebase.
 
 ## Demo:
 https://socialape-b75ab.firebaseapp.com/
