@@ -1,4 +1,4 @@
-# scream
+# Gibber
 
 Inspired from Twitter, Gibber: A pure, serverless, fully-featured social networking application developed using React, Redux, Express, Material-UI and Firebase.
 
