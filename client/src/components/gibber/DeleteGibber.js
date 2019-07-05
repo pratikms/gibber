@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
-import { deleteScream } from '../../redux/actions/data-actions'
+import { deleteGibber } from '../../redux/actions/data-actions'
 import CustomIconButton from '../../utils/CustomIconButton';
 import { DeleteOutline } from '@material-ui/icons';
 import { Dialog, DialogTitle, DialogActions, Button } from '@material-ui/core';
@@ -16,7 +16,7 @@ const styles = {
     }
 }
 
-class DeleteScream extends Component {
+class DeleteGibber extends Component {
 
     state = {
         open: false
@@ -30,8 +30,8 @@ class DeleteScream extends Component {
         this.setState({ open: false })
     }
 
-    deleteScream = () => {
-        this.props.deleteScream(this.props.screamId)
+    deleteGibber = () => {
+        this.props.deleteGibber(this.props.gibberId)
         this.setState({ open: false })
     }
 
@@ -42,7 +42,7 @@ class DeleteScream extends Component {
         return (
             <Fragment>
                 <CustomIconButton 
-                    tip="Delete Scream" 
+                    tip="Delete Gibber" 
                     onClick={this.handleOpen} 
                     btnClassName={classes.deleteButton}
                 >
@@ -55,13 +55,13 @@ class DeleteScream extends Component {
                     maxWidth="sm"
                 >
                     <DialogTitle>
-                        Are you sure you want to delete this scream?
+                        Are you sure you want to delete this gibber?
                     </DialogTitle>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
                             Cancel
                         </Button>
-                        <Button onClick={this.deleteScream} color="secondary">
+                        <Button onClick={this.deleteGibber} color="secondary">
                             Delete
                         </Button>
                     </DialogActions>
@@ -74,13 +74,13 @@ class DeleteScream extends Component {
 const mapStateToProps = null
 
 const mapActionToProps = {
-    deleteScream
+    deleteGibber
 }
 
-DeleteScream.propTypes = {
-    deleteScream: PropTypes.func.isRequired,
+DeleteGibber.propTypes = {
+    deleteGibber: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
-    screamId: PropTypes.string.isRequired
+    gibberId: PropTypes.string.isRequired
 }
 
-export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(DeleteScream))
+export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(DeleteGibber))

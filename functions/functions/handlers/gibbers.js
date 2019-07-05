@@ -1,21 +1,21 @@
 const { db } = require('../utils/admin')
 
-exports.getAllScreams = (req, res) => {
+exports.getAllGibbers = (req, res) => {
     db
-        .collection('screams')
+        .collection('gibbers')
         .orderBy('createdAt', 'desc')
         .get()
         .then(data => {
-            let screams = []
+            let gibbers = []
             data.forEach(doc => {
                 console.log('Data: ')
                 console.log(doc.data())
-                screams.push({
-                    screamId: doc.id,
+                gibbers.push({
+                    gibberId: doc.id,
                     ...doc.data()
                 })
             })
-            return res.json(screams)
+            return res.json(gibbers)
         })
         .catch(err => {
             console.error(err)
@@ -23,11 +23,11 @@ exports.getAllScreams = (req, res) => {
         })
 }
 
-exports.postScream = (req, res) => {
+exports.postGibber = (req, res) => {
     if (req.body.body.trim() === '') {
         return res.status(400).json({ body: 'Body must not be empty' });
     }    
-    const newScream = {
+    const newGibber = {
         body: req.body.body,
         userHandle: req.user.handle,
         userImage: req.user.imageUrl,
@@ -37,12 +37,12 @@ exports.postScream = (req, res) => {
     }
 
     db
-        .collection('screams')
-        .add(newScream)
+        .collection('gibbers')
+        .add(newGibber)
         .then(doc => {
-            const resScream = newScream
-            resScream.screamId = doc.id
-            return res.json(resScream)
+            const resGibber = newGibber
+            resGibber.gibberId = doc.id
+            return res.json(resGibber)
         })
         .catch(err => {
             console.error(err)
@@ -50,28 +50,28 @@ exports.postScream = (req, res) => {
         })
 }
 
-// Fetch a single scream
-exports.getScream = (req, res) => {
-    let screamData = {}
+// Fetch a single gibber
+exports.getGibber = (req, res) => {
+    let gibberData = {}
     db
-        .doc(`/screams/${req.params.screamId}`)
+        .doc(`/gibbers/${req.params.gibberId}`)
         .get()
         .then(doc => {
-            if (!doc.exists) return res.status(404).json({ error: 'Scream not found' })
-            screamData = doc.data()
-            screamData.screamId = doc.id
+            if (!doc.exists) return res.status(404).json({ error: 'Gibber not found' })
+            gibberData = doc.data()
+            gibberData.gibberId = doc.id
             return db
                 .collection('comments')
                 .orderBy('createdAt', 'desc')
-                .where('screamId', '==', req.params.screamId)
+                .where('gibberId', '==', req.params.gibberId)
                 .get()
         })
         .then(data => {
-            screamData.comments = []
+            gibberData.comments = []
             data.forEach(doc => {
-                screamData.comments.push(doc.data())
+                gibberData.comments.push(doc.data())
             })
-            return res.json(screamData)
+            return res.json(gibberData)
         })
         .catch(err => {
             console.error(err)
@@ -80,21 +80,21 @@ exports.getScream = (req, res) => {
 }
 
 // Comment on a comment
-exports.commentOnScream = (req, res) => {
+exports.commentOnGibber = (req, res) => {
     if (req.body.body.trim() === '') return res.status(400).json({ comment: 'Must not be empty' })
     const newComment = {
         body: req.body.body,
         createdAt: new Date().toISOString(),
-        screamId: req.params.screamId,
+        gibberId: req.params.gibberId,
         userHandle: req.user.handle,
         userImage: req.user.imageUrl
     }
 
     db
-        .doc(`/screams/${req.params.screamId}`)
+        .doc(`/gibbers/${req.params.gibberId}`)
         .get()
         .then(doc => {
-            if (!doc.exists) return res.status(404).json({ error: 'Scream not found' })
+            if (!doc.exists) return res.status(404).json({ error: 'Gibber not found' })
             return doc.ref.update({ commentCount: doc.data().commentCount + 1 })
         })
         .then(() => {
@@ -109,43 +109,43 @@ exports.commentOnScream = (req, res) => {
         })
 }
 
-// Like a scream
-exports.likeScream = (req, res) => {
+// Like a gibber
+exports.likeGibber = (req, res) => {
     const likeDoc = db
         .collection('likes')
         .where('userHandle', '==', req.user.handle)
-        .where('screamId', '==', req.params.screamId)
+        .where('gibberId', '==', req.params.gibberId)
         .limit(1)
 
-    const screamDoc = db.doc(`/screams/${req.params.screamId}`)
+    const gibberDoc = db.doc(`/gibbers/${req.params.gibberId}`)
 
-    let screamData = {}
+    let gibberData = {}
 
-    screamDoc
+    gibberDoc
         .get()
         .then(doc => {
             if (doc.exists) {
-                screamData = doc.data()
-                screamData.screamId = doc.id
+                gibberData = doc.data()
+                gibberData.gibberId = doc.id
                 return likeDoc.get()
-            } else return res.status(404).json({ error: 'Scream not found' })
+            } else return res.status(404).json({ error: 'Gibber not found' })
         })
         .then(data => {
             if (data.empty) {
                 return db
                     .collection('likes')
                     .add({
-                        screamId: req.params.screamId,
+                        gibberId: req.params.gibberId,
                         userHandle: req.user.handle
                     })
                     .then(() => {
-                        screamData.likeCount++
-                        return screamDoc.update({ likeCount: screamData.likeCount })
+                        gibberData.likeCount++
+                        return gibberDoc.update({ likeCount: gibberData.likeCount })
                     })
                     .then(() => {
-                        return res.json(screamData)
+                        return res.json(gibberData)
                     })
-            } else return res.status(400).json({ error: 'Scream already liked' })
+            } else return res.status(400).json({ error: 'Gibber already liked' })
         })
         .catch(err => {
             console.log(err)
@@ -153,38 +153,38 @@ exports.likeScream = (req, res) => {
         })
 }
 
-exports.unlikeScream = (req, res) => {
+exports.unlikeGibber = (req, res) => {
     const likeDoc = db
         .collection('likes')
         .where('userHandle', '==', req.user.handle)
-        .where('screamId', '==', req.params.screamId)
+        .where('gibberId', '==', req.params.gibberId)
         .limit(1)
 
-    const screamDoc = db.doc(`/screams/${req.params.screamId}`)
+    const gibberDoc = db.doc(`/gibbers/${req.params.gibberId}`)
 
-    let screamData = {}
+    let gibberData = {}
 
-    screamDoc
+    gibberDoc
         .get()
         .then(doc => {
             if (doc.exists) {
-                screamData = doc.data()
-                screamData.screamId = doc.id
+                gibberData = doc.data()
+                gibberData.gibberId = doc.id
                 return likeDoc.get()
-            } else return res.status(404).json({ error: 'Scream not found' })
+            } else return res.status(404).json({ error: 'Gibber not found' })
         })
         .then(data => {
-            if (data.empty) return res.status(400).json({ error: 'Scream not liked' })
+            if (data.empty) return res.status(400).json({ error: 'Gibber not liked' })
             else {
                 return db
                     .doc(`/likes/${data.docs[0].id}`)
                     .delete()
                     .then(() => {
-                        screamData.likeCount--;
-                        return screamDoc.update({ likeCount: screamData.likeCount })
+                        gibberData.likeCount--;
+                        return gibberDoc.update({ likeCount: gibberData.likeCount })
                     })
                     .then(() => {
-                        return res.json(screamData)
+                        return res.json(gibberData)
                     })
             }
         })
@@ -194,18 +194,18 @@ exports.unlikeScream = (req, res) => {
         })
 }
 
-// Delete scream
-exports.deleteScream = (req, res) => {
-    const document = db.doc(`/screams/${req.params.screamId}`)
+// Delete gibber
+exports.deleteGibber = (req, res) => {
+    const document = db.doc(`/gibbers/${req.params.gibberId}`)
     document
         .get()
         .then(doc => {
-            if (!doc.exists) return res.status(404).json({ error: 'Scream not found' })
+            if (!doc.exists) return res.status(404).json({ error: 'Gibber not found' })
             if (doc.data().userHandle !== req.user.handle) return res.status(403).json({ error: 'Unauthorized' })
             return document.delete()
         })
         .then(() => {
-            return res.json({ message: 'Scream deleted successfully' })
+            return res.json({ message: 'Gibber deleted successfully' })
         })
         .catch(err => {
             console.log(err)

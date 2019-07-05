@@ -15,8 +15,8 @@ import { connect } from 'react-redux'
 import { Chat } from '@material-ui/icons';
 
 import CustomIconButton from '../../utils/CustomIconButton'
-import DeleteScream from './DeleteScream';
-import ScreamDialog from './ScreamDialog'
+import DeleteGibber from './DeleteGibber';
+import GibberDialog from './GibberDialog'
 import LikeButton from './LikeButton';
 
 const styles = {
@@ -34,7 +34,7 @@ const styles = {
     }
 }
 
-class Scream extends Component {
+class Gibber extends Component {
 
     render() {
 
@@ -42,12 +42,12 @@ class Scream extends Component {
 
         const { 
             classes, 
-            scream : { 
+            gibber : { 
                 body, 
                 createdAt, 
                 userImage, 
                 userHandle , 
-                screamId, 
+                gibberId, 
                 likeCount, 
                 commentCount 
             },
@@ -61,7 +61,7 @@ class Scream extends Component {
 
 
         const deleteButton = authenticated && userHandle === handle ? (
-            <DeleteScream screamId={screamId} />
+            <DeleteGibber gibberId={gibberId} />
         ) : null
 
         return (
@@ -76,13 +76,13 @@ class Scream extends Component {
                     {deleteButton}
                     <Typography variant="body2" color="textSecondary">{dayjs(createdAt).fromNow()}</Typography>
                     <Typography variant="body1">{body}</Typography>
-                    <LikeButton screamId={screamId} />
+                    <LikeButton gibberId={gibberId} />
                     <span>{likeCount ? likeCount : 0} likes</span>
                     <CustomIconButton tip="comments">
                         <Chat color="primary" />
                     </CustomIconButton>
                     <span>{commentCount ? commentCount : 0} comments</span>
-                    <ScreamDialog screamId={screamId} userHandle={userHandle} openDialog={this.props.openDialog} />
+                    <GibberDialog gibberId={gibberId} userHandle={userHandle} openDialog={this.props.openDialog} />
                 </CardContent>
             </Card>
         )
@@ -93,11 +93,11 @@ const mapStateToProps = (state) => ({
     user: state.user
 })
 
-Scream.propTypes = {
+Gibber.propTypes = {
     user: PropTypes.object.isRequired,
-    scream: PropTypes.object.isRequired,
+    gibber: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired,
     openDialog: PropTypes.bool
 }
 
-export default connect(mapStateToProps)(withStyles(styles)(Scream))
+export default connect(mapStateToProps)(withStyles(styles)(Gibber))

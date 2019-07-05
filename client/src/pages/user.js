@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import PropTypes from 'prop-types'
-import Scream from '../components/scream/Scream'
+import Gibber from '../components/gibber/Gibber'
 import StaticProfile from '../components/profile/StaticProfile'
 
-import ScreamSkeleton from '../utils/ScreamSkeleton'
+import GibberSkeleton from '../utils/GibberSkeleton'
 import ProfileSkeleton from '../utils/ProfileSkeleton'
 
 import { connect } from 'react-redux'
@@ -15,14 +15,14 @@ class User extends Component {
 
     state = {
         profile: null,
-        screamIdParam: null
+        gibberIdParam: null
     }
 
     componentDidMount() {
         const handle = this.props.match.params.handle
-        const screamId = this.props.match.params.screamId
+        const gibberId = this.props.match.params.gibberId
 
-        if (screamId) this.setState({ screamIdParam: screamId })
+        if (gibberId) this.setState({ gibberIdParam: gibberId })
 
         this.props.getUserData(handle)
         axios.get(`/user/${handle}`)
@@ -36,26 +36,26 @@ class User extends Component {
 
     render() {
 
-        const { screams, loading } = this.props.data
-        const { screamIdParam } = this.state
+        const { gibbers, loading } = this.props.data
+        const { gibberIdParam } = this.state
 
-        const screamsMarkup = loading ? (
-            <ScreamSkeleton />
-        ) : screams === null ? (
-            <p>No screams yet</p>
-        ) : !screamIdParam ? (
-            screams.map(scream => <Scream key={scream.screamId} scream={scream} />)
+        const gibbersMarkup = loading ? (
+            <GibberSkeleton />
+        ) : gibbers === null ? (
+            <p>No gibbers yet</p>
+        ) : !gibberIdParam ? (
+            gibbers.map(gibber => <Gibber key={gibber.gibberId} gibber={gibber} />)
         ) : (
-            screams.map(scream => {
-                if (scream.screamId !== screamIdParam) return <Scream key={scream.screamId} scream={scream} />
-                else return <Scream key={scream.screamId} scream={scream} openDialog />
+            gibbers.map(gibber => {
+                if (gibber.gibberId !== gibberIdParam) return <Gibber key={gibber.gibberId} gibber={gibber} />
+                else return <Gibber key={gibber.gibberId} gibber={gibber} openDialog />
             })
         )
 
         return (
             <Grid container spacing={2}>
                 <Grid item sm={8} xs={12}>
-                    { screamsMarkup }
+                    { gibbersMarkup }
                 </Grid>
                 <Grid item sm={4} xs={12}>
                     {this.state.profile === null ? (

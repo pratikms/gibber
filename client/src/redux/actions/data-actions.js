@@ -1,46 +1,46 @@
 import { 
-    SET_SCREAMS, 
+    SET_GIBBERS, 
     LOADING_DATA, 
-    LIKE_SCREAM, 
-    UNLIKE_SCREAM,
-    DELETE_SCREAM,
+    LIKE_GIBBER, 
+    UNLIKE_GIBBER,
+    DELETE_GIBBER,
     LOADING_UI,
     SET_ERRORS,
     CLEAR_ERRORS,
-    POST_SCREAM,
-    SET_SCREAM,
+    POST_GIBBER,
+    SET_GIBBER,
     STOP_LOADING_UI,
     SUBMIT_COMMENT
 } from '../types'
 import axios from 'axios'
 
-// Get all screams
-export const getScreams = () => (dispatch) => {
+// Get all gibbers
+export const getGibbers = () => (dispatch) => {
     dispatch({ type: LOADING_DATA })
-    axios.get('/screams')
+    axios.get('/gibbers')
         .then(res => {
             dispatch({
-                type: SET_SCREAMS,
+                type: SET_GIBBERS,
                 payload: res.data
             })
         })
         .catch(err => {
             dispatch({
-                type: SET_SCREAMS,
+                type: SET_GIBBERS,
                 payload: []
             })
         })
 }
 
-// Post a scream
-export const postScream = (newScream) => (dispatch) => {
+// Post a gibber
+export const postGibber = (newGibber) => (dispatch) => {
     dispatch({ type: LOADING_UI })
-    console.log(newScream);
+    console.log(newGibber);
     
-    axios.post('/scream', newScream)
+    axios.post('/gibber', newGibber)
         .then(res => {
             dispatch({
-                type: POST_SCREAM,
+                type: POST_GIBBER,
                 payload: res.data
             })
             dispatch(clearErrors())
@@ -53,24 +53,24 @@ export const postScream = (newScream) => (dispatch) => {
         })
 }
 
-// Like a scream
-export const likeScream = (screamId) => (dispatch) => {
-    axios.get(`/scream/${screamId}/like`)
+// Like a gibber
+export const likeGibber = (gibberId) => (dispatch) => {
+    axios.get(`/gibber/${gibberId}/like`)
         .then(res => {
             dispatch({
-                type: LIKE_SCREAM,
+                type: LIKE_GIBBER,
                 payload: res.data
             })
         })
         .catch(err => console.log(err))
 }
 
-// Unlike a scream
-export const unlikeScream = (screamId) => (dispatch) => {
-    axios.get(`/scream/${screamId}/unlike`)
+// Unlike a gibber
+export const unlikeGibber = (gibberId) => (dispatch) => {
+    axios.get(`/gibber/${gibberId}/unlike`)
         .then(res => {
             dispatch({
-                type: UNLIKE_SCREAM,
+                type: UNLIKE_GIBBER,
                 payload: res.data
             })
         })
@@ -78,8 +78,8 @@ export const unlikeScream = (screamId) => (dispatch) => {
 }
 
 // Submit a comment
-export const submitComment = (screamId, commentData) => (dispatch) => {
-    axios.post(`/scream/${screamId}/comment`, commentData)
+export const submitComment = (gibberId, commentData) => (dispatch) => {
+    axios.post(`/gibber/${gibberId}/comment`, commentData)
         .then(res => {
             dispatch({
                 type: SUBMIT_COMMENT,
@@ -95,13 +95,13 @@ export const submitComment = (screamId, commentData) => (dispatch) => {
         })
 }
 
-// Delete a scream
-export const deleteScream = (screamId) => (dispatch) => {
-    axios.delete(`/scream/${screamId}`)
+// Delete a gibber
+export const deleteGibber = (gibberId) => (dispatch) => {
+    axios.delete(`/gibber/${gibberId}`)
         .then(() => {
             dispatch({
-                type: DELETE_SCREAM,
-                payload: screamId
+                type: DELETE_GIBBER,
+                payload: gibberId
             })
         })
         .catch(err => console.log(err))
@@ -112,13 +112,13 @@ export const clearErrors = () => (dispatch) => {
     dispatch({ type: CLEAR_ERRORS })
 }
 
-// Get a single scream
-export const getScream = (screamId) => (dispatch) => {
+// Get a single gibber
+export const getGibber = (gibberId) => (dispatch) => {
     dispatch({ type: LOADING_UI })
-    axios.get(`/scream/${screamId}`)
+    axios.get(`/gibber/${gibberId}`)
         .then(res => {
             dispatch({
-                type: SET_SCREAM,
+                type: SET_GIBBER,
                 payload: res.data
             })
             dispatch({ type: STOP_LOADING_UI })
@@ -132,13 +132,13 @@ export const getUserData = (userHandle) => (dispatch) => {
     axios.get(`/user/${userHandle}`)
         .then(res => {
             dispatch({
-                type: SET_SCREAMS,
-                payload: res.data.screams
+                type: SET_GIBBERS,
+                payload: res.data.gibbers
             })
         })
         .catch(err => {
             dispatch({
-                type: SET_SCREAMS,
+                type: SET_GIBBERS,
                 payload: null
             })
         })

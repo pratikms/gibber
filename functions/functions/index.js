@@ -11,14 +11,14 @@ app.use(cors())
 const { db } = require('./utils/admin')
 
 const { 
-    getAllScreams, 
-    postScream, 
-    getScream, 
-    commentOnScream, 
-    likeScream, 
-    unlikeScream, 
-    deleteScream 
-} = require('./handlers/screams')
+    getAllGibbers, 
+    postGibber, 
+    getGibber, 
+    commentOnGibber, 
+    likeGibber, 
+    unlikeGibber, 
+    deleteGibber 
+} = require('./handlers/gibbers')
 
 const { 
     signup, 
@@ -30,14 +30,14 @@ const {
     markNotificationsRead
 } = require('./handlers/users')
 
-// Scream routes
-app.get('/screams', getAllScreams)
-app.post('/scream', FirebaseAuth, postScream)
-app.get('/scream/:screamId', getScream)
-app.delete('/scream/:screamId', FirebaseAuth, deleteScream)
-app.get('/scream/:screamId/like', FirebaseAuth, likeScream)
-app.get('/scream/:screamId/unlike', FirebaseAuth, unlikeScream)
-app.post('/scream/:screamId/comment', FirebaseAuth, commentOnScream)
+// Gibber routes
+app.get('/gibbers', getAllGibbers)
+app.post('/gibber', FirebaseAuth, postGibber)
+app.get('/gibber/:gibberId', getGibber)
+app.delete('/gibber/:gibberId', FirebaseAuth, deleteGibber)
+app.get('/gibber/:gibberId/like', FirebaseAuth, likeGibber)
+app.get('/gibber/:gibberId/unlike', FirebaseAuth, unlikeGibber)
+app.post('/gibber/:gibberId/comment', FirebaseAuth, commentOnGibber)
 
 // Users routes
 app.post('/signup', signup)
@@ -57,7 +57,7 @@ exports.triggerNotificationOnLike = functions
     .firestore.document('likes/{id}')
     .onCreate(snapshot => {
         return db
-            .doc(`/screams/${snapshot.data().screamId}`)
+            .doc(`/gibbers/${snapshot.data().gibberId}`)
             .get()
             .then(doc => {
                 if (doc.exists && doc.data().userHandle !== snapshot.data().userHandle) {
@@ -69,7 +69,7 @@ exports.triggerNotificationOnLike = functions
                             sender: snapshot.data().userHandle,
                             type: 'like',
                             read: false,
-                            screamId: doc.id
+                            gibberId: doc.id
                         })
                 }
             })
@@ -95,7 +95,7 @@ exports.triggerNotificationOnComment = functions
     .firestore.document('comments/{id}')
     .onCreate(snapshot => {
         return db
-            .doc(`/screams/${snapshot.data().screamId}`)
+            .doc(`/gibbers/${snapshot.data().gibberId}`)
             .get()
             .then(doc => {
                 if (doc.exists  && doc.data().userHandle !== snapshot.data().userHandle) {
@@ -107,7 +107,7 @@ exports.triggerNotificationOnComment = functions
                             sender: snapshot.data().userHandle,
                             type: 'comment',
                             read: false,
-                            screamId: doc.id
+                            gibberId: doc.id
                         })
                 }
             })
@@ -125,13 +125,13 @@ exports.onUserImageChange = functions
         if (change.before.data().imageUrl !== change.after.data().imageUrl) {
             const batch = db.batch()
             return db
-                .collection('screams')
+                .collection('gibbers')
                 .where('userHandle', '==', change.before.data().handle)
                 .get()
                 .then(data => {
                     data.forEach(doc => {
-                        const scream = db.doc(`/screams/${doc.id}`)
-                        batch.update(scream, { userImage: change.after.data().imageUrl })
+                        const gibber = db.doc(`/gibbers/${doc.id}`)
+                        batch.update(gibber, { userImage: change.after.data().imageUrl })
                     })
                     return batch.commit()
                 })
@@ -139,15 +139,15 @@ exports.onUserImageChange = functions
         return true
     })
 
-exports.onScreamDelete = functions
+exports.onGibberDelete = functions
     .region('asia-east2')
-    .firestore.document('/screams/{screamId}')
+    .firestore.document('/gibbers/{gibberId}')
     .onDelete((snapshot, context) => {
-        const screamId = context.params.screamId
+        const gibberId = context.params.gibberId
         const batch = db.batch()
         return db
             .collection('comments')
-            .where('screamId', '==', screamId)
+            .where('gibberId', '==', gibberId)
             .get()
             .then(data => {
                 data.forEach(doc => {
@@ -155,7 +155,7 @@ exports.onScreamDelete = functions
                 })
                 return db
                     .collection('likes')
-                    .where('screamId', '==', screamId)
+                    .where('gibberId', '==', gibberId)
                     .get()
             })
             .then(data => {
@@ -164,7 +164,7 @@ exports.onScreamDelete = functions
                 })
                 return db
                     .collection('notifications')
-                    .where('screamId', '==', screamId)
+                    .where('gibberId', '==', gibberId)
                     .get()
             })
             .then(data => {

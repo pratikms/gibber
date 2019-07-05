@@ -1,33 +1,33 @@
 import React, { Component } from 'react'
 import { Grid } from '@material-ui/core';
 
-import Scream from '../components/scream/Scream'
+import Gibber from '../components/gibber/Gibber'
 import Profile from '../components/profile/Profile'
-import ScreamSkeleton from '../utils/ScreamSkeleton'
+import GibberSkeleton from '../utils/GibberSkeleton'
 
 import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
-import { getScreams } from '../redux/actions/data-actions'
+import { getGibbers } from '../redux/actions/data-actions'
 
 class Home extends Component {
 
     componentDidMount() {
-        this.props.getScreams()
+        this.props.getGibbers()
     }
 
     render() {
 
-        const { screams, loading } = this.props.data
+        const { gibbers, loading } = this.props.data
 
-        let recentScreamsMarkup = !loading ?
-            screams.map(scream => <Scream key={scream.screamId} scream={scream} />) : 
-            <ScreamSkeleton />
+        let recentGibbersMarkup = !loading ?
+            gibbers.map(gibber => <Gibber key={gibber.gibberId} gibber={gibber} />) : 
+            <GibberSkeleton />
 
         return (
             <Grid container spacing={2}>
                 <Grid item sm={8} xs={12}>
-                    { recentScreamsMarkup }
+                    { recentGibbersMarkup }
                 </Grid>
                 <Grid item sm={4} xs={12}>
                     <Profile />
@@ -42,11 +42,11 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionToProps = {
-    getScreams
+    getGibbers
 }
 
 Home.propTypes = {
-    getScreams: PropTypes.func.isRequired,
+    getGibbers: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired
 }
 

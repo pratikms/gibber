@@ -11,10 +11,10 @@ let db = {
             location: 'India'
         }
     ],
-    screams: [
+    gibbers: [
         {
             userHandle: 'user',
-            body: 'this is the scream body',
+            body: 'this is the gibber body',
             createdAt: '2019-06-29T19:21:11.256Z',
             likeCount: 5,
             commentCount: 2
@@ -23,7 +23,7 @@ let db = {
     comments: [
         {
             userHandle: '',
-            screamId: '',
+            gibberId: '',
             body: '',
             createdAt: ''
         }
@@ -33,7 +33,7 @@ let db = {
             recipient: 'user',
             sender: 'john',
             read: 'true | false',
-            screamId: 'sdfsdf',
+            gibberId: 'sdfsdf',
             type: 'like | comment',
             createdAt: '2019-06-29T19:21:11.256Z',
         }
@@ -54,11 +54,11 @@ const userDetails = {
     likes: [
         {
             userHandle: 'user',
-            screamId: 'sdflklrter'
+            gibberId: 'sdflklrter'
         },
         {
             userHandle: 'user',
-            screamId: 'lkjlklrter'
+            gibberId: 'lkjlklrter'
         }
     ]
 }

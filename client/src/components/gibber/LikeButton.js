@@ -5,23 +5,23 @@ import PropTypes from 'prop-types'
 import { FavoriteBorder, Favorite } from '@material-ui/icons';
 
 import { connect } from 'react-redux'
-import { likeScream, unlikeScream } from '../../redux/actions/data-actions'
+import { likeGibber, unlikeGibber } from '../../redux/actions/data-actions'
 
 class LikeButton extends Component {
     
-    likedScream = () => {
-        if (this.props.user.likes && this.props.user.likes.find(like => like.screamId === this.props.screamId)) {
+    likedGibber = () => {
+        if (this.props.user.likes && this.props.user.likes.find(like => like.gibberId === this.props.gibberId)) {
             return true
         }
         return false
     }
 
-    likeScream = () => {
-        this.props.likeScream(this.props.screamId)
+    likeGibber = () => {
+        this.props.likeGibber(this.props.gibberId)
     }
 
-    unlikeScream = () => {
-        this.props.unlikeScream(this.props.screamId)
+    unlikeGibber = () => {
+        this.props.unlikeGibber(this.props.gibberId)
     }
 
     render() {
@@ -35,12 +35,12 @@ class LikeButton extends Component {
                 </CustomIconButton>
             </Link>
         ) : (
-            this.likedScream() ? (
-                <CustomIconButton tip="Unlike" onClick={this.unlikeScream}>
+            this.likedGibber() ? (
+                <CustomIconButton tip="Unlike" onClick={this.unlikeGibber}>
                     <Favorite color="primary" />
                 </CustomIconButton>
             ) : (
-                <CustomIconButton tip="Like" onClick={this.likeScream}>
+                <CustomIconButton tip="Like" onClick={this.likeGibber}>
                     <FavoriteBorder color="primary" />
                 </CustomIconButton>
             )
@@ -55,15 +55,15 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionsToProps = {
-    likeScream,
-    unlikeScream
+    likeGibber,
+    unlikeGibber
 }
 
 LikeButton.propTypes = {
     user: PropTypes.object.isRequired,
-    screamId: PropTypes.string.isRequired,
-    likeScream: PropTypes.func.isRequired,
-    unlikeScream: PropTypes.func.isRequired,
+    gibberId: PropTypes.string.isRequired,
+    likeGibber: PropTypes.func.isRequired,
+    unlikeGibber: PropTypes.func.isRequired,
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(LikeButton)

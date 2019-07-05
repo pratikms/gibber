@@ -3,8 +3,8 @@ import {
     SET_AUTHENTICATED, 
     SET_UNAUTHENTICATED,
     LOADING_USER,
-    LIKE_SCREAM,
-    UNLIKE_SCREAM,
+    LIKE_GIBBER,
+    UNLIKE_GIBBER,
     MARK_NOTIFICATIONS_READ
 } from '../types'
 
@@ -40,23 +40,23 @@ export default (state = initialState, action) => {
                 loading: true
             }
 
-        case LIKE_SCREAM:
+        case LIKE_GIBBER:
             return {
                 ...state,
                 likes: [
                     ...state.likes,
                     {
                         userHandle: state.credentials.handle,
-                        screamId: action.payload.screamId
+                        gibberId: action.payload.gibberId
                     }
                 ]
             }
 
-        case UNLIKE_SCREAM:
+        case UNLIKE_GIBBER:
             return {
                 ...state,
                 likes: state.likes.filter((
-                    like) => like.screamId !== action.payload.screamId
+                    like) => like.gibberId !== action.payload.gibberId
                 )
             }
 

@@ -105,17 +105,17 @@ exports.getUserDetails = (req, res) => {
             if (doc.exists) {
                 userData.user = doc.data()
                 return db
-                    .collection('screams')
+                    .collection('gibbers')
                     .where('userHandle', '==', req.params.handle)
                     .orderBy('createdAt', 'desc')
                     .get()
             }
         })
         .then(data => {
-            userData.screams = []
+            userData.gibbers = []
             data.forEach(doc => {
-                userData.screams.push({
-                    screamId: doc.id,
+                userData.gibbers.push({
+                    gibberId: doc.id,
                     ...doc.data()
                 })
             })

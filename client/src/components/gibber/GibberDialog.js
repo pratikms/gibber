@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import withStyles from '@material-ui/core/styles/withStyles'
 
 import { connect } from 'react-redux'
-import { getScream, clearErrors } from '../../redux/actions/data-actions'
+import { getGibber, clearErrors } from '../../redux/actions/data-actions'
 
 import dayjs from 'dayjs'
 import { Link } from 'react-router-dom'
@@ -43,7 +43,7 @@ const styles = {
     }
 }
 
-class ScreamDialog extends Component {
+class GibberDialog extends Component {
 
     state = {
         open: false,
@@ -59,14 +59,14 @@ class ScreamDialog extends Component {
 
     handleOpen = () => {
         let oldPath = window.location.pathname
-        const { userHandle, screamId } = this.props
-        const newPath = `/users/${userHandle}/scream/${screamId}`
+        const { userHandle, gibberId } = this.props
+        const newPath = `/users/${userHandle}/gibber/${gibberId}`
         window.history.pushState(null, null, newPath)
 
         if (oldPath === newPath) oldPath = `/users/${userHandle}`
 
         this.setState({ open: true, oldPath, newPath })
-        this.props.getScream(this.props.screamId)
+        this.props.getGibber(this.props.gibberId)
     }
 
     handleClose = () => {
@@ -79,8 +79,8 @@ class ScreamDialog extends Component {
         
         const { 
             classes, 
-            scream: { 
-                screamId, 
+            gibber: { 
+                gibberId, 
                 body, 
                 createdAt, 
                 likeCount, 
@@ -119,7 +119,7 @@ class ScreamDialog extends Component {
                     <Typography variant="body1">
                         {body}
                     </Typography>
-                    <LikeButton screamId={screamId} />
+                    <LikeButton gibberId={gibberId} />
                     <span>{likeCount ? likeCount : 0} likes</span>
                     <CustomIconButton tip="comments">
                         <Chat color="primary" />
@@ -127,14 +127,14 @@ class ScreamDialog extends Component {
                     <span>{commentCount ? commentCount : 0} comments</span>
                 </Grid>
                 <hr className={classes.visibleSeparator} />
-                <CommentForm screamId={screamId} />
+                <CommentForm gibberId={gibberId} />
                 <Comments comments={comments} />
             </Grid>
         )
 
         return (
             <Fragment>
-                <CustomIconButton onClick={this.handleOpen} tip="Expand scream" tipClassName={classes.expandButton}>
+                <CustomIconButton onClick={this.handleOpen} tip="Expand gibber" tipClassName={classes.expandButton}>
                     <UnfoldMore color="primary" />
                 </CustomIconButton>
                 <Dialog                    
@@ -157,22 +157,22 @@ class ScreamDialog extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    scream: state.data.scream,
+    gibber: state.data.gibber,
     ui: state.ui
 })
 
 const mapActionsToProps = {
-    getScream,
+    getGibber,
     clearErrors
 }
 
-ScreamDialog.propTypes = {
-    getScream: PropTypes.func.isRequired,
+GibberDialog.propTypes = {
+    getGibber: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired,
-    screamId: PropTypes.string.isRequired,
+    gibberId: PropTypes.string.isRequired,
     userHandle: PropTypes.string.isRequired,
-    scream: PropTypes.object.isRequired,
+    gibber: PropTypes.object.isRequired,
     ui: PropTypes.object.isRequired
 }
 
-export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(ScreamDialog))
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(GibberDialog))

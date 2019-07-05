@@ -12,7 +12,7 @@ import PropTypes from 'prop-types'
 import { Home } from '@material-ui/icons';
 
 import CustomIconButton from '../../utils/CustomIconButton';
-import PostScream from '../scream/PostScream'
+import PostGibber from '../gibber/PostGibber'
 import Notifications from './Notifications'
 
 class Navbar extends Component {
@@ -26,7 +26,7 @@ class Navbar extends Component {
                     <Toolbar className='nav-container'>
                         { authenticated ? (
                             <Fragment>
-                                <PostScream />
+                                <PostGibber />
                                 <Link to="/">
                                     <CustomIconButton tip="Home">
                                         <Home />

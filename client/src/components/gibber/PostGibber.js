@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import withStyles from '@material-ui/core/styles/withStyles'
 
 import { connect } from 'react-redux'
-import { postScream, clearErrors } from '../../redux/actions/data-actions'
+import { postGibber, clearErrors } from '../../redux/actions/data-actions'
 
 // Icons
 import { Dialog, DialogTitle, DialogContent, TextField, CircularProgress, Button } from '@material-ui/core';
@@ -28,7 +28,7 @@ const styles = {
     }
 }
 
-class PostScream extends Component {
+class PostGibber extends Component {
 
     state = {
         open: false,
@@ -54,7 +54,7 @@ class PostScream extends Component {
     handleSubmit = (event) => {
         event.preventDefault()
         console.log(this.state)
-        this.props.postScream({ body: this.state.body })
+        this.props.postGibber({ body: this.state.body })
     }
 
     componentWillReceiveProps(nextProps) {
@@ -76,7 +76,7 @@ class PostScream extends Component {
 
         return (
             <Fragment>
-                <CustomIconButton onClick={this.handleOpen} tip="Scream!">
+                <CustomIconButton onClick={this.handleOpen} tip="Gibber!">
                     <Add />
                 </CustomIconButton>
                 <Dialog 
@@ -88,7 +88,7 @@ class PostScream extends Component {
                     <CustomIconButton tip="Close" onClick={this.handleClose} tipClassName={classes.closeButton}>
                         <Close />
                     </CustomIconButton>
-                    <DialogTitle>Post a new scream</DialogTitle>
+                    <DialogTitle>Post a new gibber</DialogTitle>
                     <DialogContent>
                         <form onSubmit={this.handleSubmit}>
                             <TextField
@@ -129,14 +129,14 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionToProps = {
-    postScream,
+    postGibber,
     clearErrors
 }
 
-PostScream.propTypes = {
-    postScream: PropTypes.func.isRequired,
+PostGibber.propTypes = {
+    postGibber: PropTypes.func.isRequired,
     clearErrors: PropTypes.func.isRequired,
     ui: PropTypes.object.isRequired
 }
 
-export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(PostScream))
+export default connect(mapStateToProps, mapActionToProps)(withStyles(styles)(PostGibber))
